@@ -9,6 +9,9 @@ export default {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["dark", "light"],
+    themes: ["light", "dark"],
   },
-}
+  corePlugins: {
+    preflight: false, // ✅ Tailwind base reset off
+  },
+};

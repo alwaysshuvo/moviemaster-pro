@@ -1,16 +1,20 @@
-# React + Vite
+# WarmPaws – Pet Care in Winter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A cozy winter platform for pet owners to keep their furry friends warm, safe, and healthy during the cold season. Users can explore local pet care services, winter clothing, grooming options, and expert tips — all in one friendly interface.
 
-Currently, two official plugins are available:
+## Live URL
+[https://warpaws-pet-care.netlify.app/](https://warpaws-pet-care.netlify.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Key Features
+- Browse and book local pet care services
+- Winter pet clothing and accessories
+- Grooming tips and expert advice
+- User authentication with Email/Password & Google Sign-In
+- Responsive design with interactive UI and animations
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## NPM Packages Used
+- **React**, **React DOM**, **React Router DOM**, **React Icons**, **React Hot Toast**
+- **Framer Motion**, **Swiper**, **Animate.css**, **AOS**
+- **TailwindCSS**, **DaisyUI**, **Flowbite**
+- **Firebase** (Authentication & Database)
+- **Vite**, **ESLint**, **PostCSS**, **Autoprefixer**
