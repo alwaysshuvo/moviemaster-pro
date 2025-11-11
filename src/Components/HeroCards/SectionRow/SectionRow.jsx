@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
@@ -11,25 +12,23 @@ const SectionRow = ({ title, limit, startIndex }) => {
   }, [limit, startIndex]);
 
   return (
-    <div className="my-10 px-6">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-2xl font-bold text-white">{title}</h3>
+    <div className="py-16">
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-3xl font-bold text-white">{title}</h3>
         <Link to="/all-movies" className="text-sm text-blue-400 hover:underline">
           See All →
         </Link>
       </div>
-      <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
+      <div className="flex gap-6 overflow-x-auto scrollbar-hide pb-4">
         {movies.map((movie) => (
           <div
             key={movie.id}
-            className="flex-shrink-0 w-48 bg-slate-800 rounded-xl overflow-hidden shadow hover:scale-105 transition"
+            className="flex-shrink-0 w-52 bg-[#1c2541] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300"
           >
             <img src={movie.posterUrl} alt={movie.title} className="w-full h-64 object-cover" />
-            <div className="p-2 text-center">
-              <h4 className="text-sm font-semibold text-white truncate">
-                {movie.title}
-              </h4>
-              <p className="text-xs text-gray-400">⭐ {movie.rating}</p>
+            <div className="p-3 text-center">
+              <h4 className="text-sm font-semibold text-white truncate">{movie.title}</h4>
+              <p className="text-xs text-gray-400 mt-1">⭐ {movie.rating}</p>
             </div>
           </div>
         ))}

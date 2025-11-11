@@ -1,3 +1,4 @@
+// src/Components/Navbar/Navbar.jsx
 import { useContext, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
@@ -29,7 +30,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-base-100 shadow-md sticky top-0 z-50">
+    <nav className="bg-[#1c2541]/90 backdrop-blur-md text-white sticky top-0 z-50 border-b border-white/10">
       <div className="container mx-auto flex justify-between items-center px-4 py-3">
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center gap-2 font-bold text-xl">
@@ -136,7 +137,7 @@ function Navbar() {
       </div>
 
       {isMenuOpen && (
-        <div className="lg:hidden bg-base-100 border-t border-gray-200">
+        <div className="lg:hidden bg-[#1c2541] border-t border-gray-700">
           <ul className="menu p-4 space-y-2 font-medium text-base">
             <li><NavLink to="/" end onClick={() => setIsMenuOpen(false)}>Home</NavLink></li>
             <li><NavLink to="/all-movies" onClick={() => setIsMenuOpen(false)}>All Movies</NavLink></li>

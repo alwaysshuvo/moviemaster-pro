@@ -79,7 +79,6 @@ const Signin = () => {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-blue-50 via-white to-blue-100">
-      {/* LEFT SIDE IMAGE */}
       <motion.div
         initial={{ opacity: 0, x: -60 }}
         animate={{ opacity: 1, x: 0 }}
@@ -93,7 +92,6 @@ const Signin = () => {
         />
       </motion.div>
 
-      {/* RIGHT SIDE FORM */}
       <motion.div
         initial={{ opacity: 0, x: 60 }}
         animate={{ opacity: 1, x: 0 }}
