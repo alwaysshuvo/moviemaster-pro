@@ -17,7 +17,9 @@ const MyCollection = () => {
     if (!user?.email) return;
     const fetchUserMovies = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/movies`);
+        const res = await axios.get(
+          `https://moviemaster-pro-server.vercel.app/movies`
+        );
         const userMovies = res.data.filter((m) => m.addedBy === user.email);
         setMovies(userMovies);
       } catch (err) {
@@ -37,7 +39,9 @@ const MyCollection = () => {
 
   const confirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:3000/movies/${deleteId}`);
+      await axios.delete(
+        `https://moviemaster-pro-server.vercel.app/movies/${deleteId}`
+      );
       setMovies(movies.filter((m) => m._id !== deleteId));
       toast.success(`"${deleteTitle}" deleted successfully!`);
     } catch (err) {
@@ -143,13 +147,18 @@ const MyCollection = () => {
 
       <dialog id="delete_modal" className="modal">
         <div className="modal-box bg-base-200 text-center">
-          <h3 className="text-lg font-bold text-red-500 mb-3">⚠️ Confirm Delete</h3>
+          <h3 className="text-lg font-bold text-red-500 mb-3">
+            ⚠️ Confirm Delete
+          </h3>
           <p className="text-base-content/80 mb-6">
             Are you sure you want to delete{" "}
             <span className="font-semibold">{deleteTitle}</span>?
           </p>
           <div className="flex justify-center gap-4">
-            <button onClick={confirmDelete} className="btn btn-error text-white">
+            <button
+              onClick={confirmDelete}
+              className="btn btn-error text-white"
+            >
               Yes, Delete
             </button>
             <form method="dialog">

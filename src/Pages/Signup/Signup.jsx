@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-import { toast } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { motion } from "framer-motion";
 import LoadingSpinner from "../../Components/LoadingSpinner/LoadingSpinner";
@@ -20,7 +20,6 @@ const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
 const Signup = () => {
-  const { theme, setTheme } = useOutletContext(); // 🌗 Theme from MainLayout
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -32,6 +31,8 @@ const Signup = () => {
   const [initialLoading, setInitialLoading] = useState(true);
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
     const timer = setTimeout(() => setInitialLoading(false), 400);
@@ -40,11 +41,11 @@ const Signup = () => {
 
   if (initialLoading) return <LoadingSpinner />;
 
-  const handleTheme = (checked) => setTheme(checked ? "night" : "winter");
-
   const getPasswordValidationError = (password) => {
-    if (!/[A-Z]/.test(password)) return "Password must contain an uppercase letter.";
-    if (!/[a-z]/.test(password)) return "Password must contain a lowercase letter.";
+    if (!/[A-Z]/.test(password))
+      return "Password must contain an uppercase letter.";
+    if (!/[a-z]/.test(password))
+      return "Password must contain a lowercase letter.";
     if (password.length < 6) return "Password must be at least 6 characters.";
     return "";
   };
@@ -62,23 +63,36 @@ const Signup = () => {
     e.preventDefault();
     const { name, photoURL, email, password } = formData;
     const passErr = getPasswordValidationError(password);
-
     if (passErr) {
-      setPasswordError(passErr);
       toast.error(passErr);
       return;
     }
 
     setLoading(true);
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
       await updateProfile(user, { displayName: name, photoURL });
+      toast.success("🎉 Account created successfully!");
       await signOut(auth);
-      toast.success("Account created successfully!");
-      navigate("/");
+      navigate("/login", { replace: true, state: { from } });
     } catch (error) {
-      toast.error("Something went wrong. Try again.");
+      console.error(error);
+      if (error.code === "auth/email-already-in-use") {
+        toast.error(
+          "⚠️ This email is already registered. Try logging in instead."
+        );
+      } else if (error.code === "auth/invalid-email") {
+        toast.error("❌ Invalid email format.");
+      } else if (error.code === "auth/weak-password") {
+        toast.error("⚠️ Password is too weak.");
+      } else {
+        toast.error("❌ Something went wrong. Try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -88,8 +102,8 @@ const Signup = () => {
     setLoading(true);
     try {
       await signInWithPopup(auth, googleProvider);
-      toast.success("Signed in successfully with Google!");
-      navigate("/");
+      toast.success("Signed up successfully with Google!");
+      navigate(from, { replace: true });
     } catch {
       toast.error("Google sign-in failed.");
     } finally {
@@ -99,35 +113,22 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-base-100 text-base-content transition-all duration-300">
+      <Toaster position="top-center" /> {/* ✅ Toast Enabled */}
       <motion.div
         initial={{ opacity: 0, x: -60 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
         className="md:w-1/2 bg-base-100 flex flex-col justify-center p-10"
       >
-        <div className="flex justify-end mb-4">
-          <label className="flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              className="toggle toggle-primary"
-              onChange={(e) => handleTheme(e.target.checked)}
-              checked={theme === "night"}
-            />
-            <span className="ml-2 text-sm font-medium">
-              {theme === "night" ? "Dark" : "Light"}
-            </span>
-          </label>
-        </div>
-
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
           className="w-full max-w-md mx-auto bg-base-200 p-8 rounded-2xl shadow-xl"
         >
-          <h1 className="text-4xl font-bold mb-3 text-center">Sign Up Please</h1>
+          <h1 className="text-4xl font-bold mb-3 text-center">Sign Up</h1>
           <p className="opacity-70 text-center mb-6">
-            Join Our MovieMatrix Community 🎬
+            Join the MovieMatrix community 🎬
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -138,9 +139,8 @@ const Signup = () => {
               onChange={handleChange}
               placeholder="Your Name"
               required
-              className="w-full border border-base-300 bg-base-100 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary"
+              className="input input-bordered w-full"
             />
-
             <input
               type="email"
               name="email"
@@ -148,18 +148,16 @@ const Signup = () => {
               onChange={handleChange}
               placeholder="Your Email"
               required
-              className="w-full border border-base-300 bg-base-100 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary"
+              className="input input-bordered w-full"
             />
-
             <input
               type="text"
               name="photoURL"
               value={formData.photoURL}
               onChange={handleChange}
               placeholder="Photo URL"
-              className="w-full border border-base-300 bg-base-100 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary"
+              className="input input-bordered w-full"
             />
-
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -168,9 +166,7 @@ const Signup = () => {
                 onChange={handleChange}
                 placeholder="Password"
                 required
-                className={`w-full border rounded-lg px-4 py-2.5 bg-base-100 focus:outline-none focus:ring-2 focus:ring-primary ${
-                  passwordError ? "border-red-500" : "border-base-300"
-                }`}
+                className="input input-bordered w-full pr-10"
               />
               <button
                 type="button"
@@ -180,54 +176,40 @@ const Signup = () => {
                 {showPassword ? <FaEye /> : <FaEyeSlash />}
               </button>
             </div>
-
             {passwordError && (
               <p className="text-red-600 text-sm mt-1">{passwordError}</p>
             )}
-
-            <motion.button
-              whileTap={{ scale: 0.97 }}
+            <button
               type="submit"
               disabled={loading}
-              className={`w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-2.5 rounded-lg font-semibold shadow-md transition ${
-                loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
-              }`}
+              className="btn btn-primary w-full"
             >
-              {loading ? (
-                <>
-                  <LoadingAnimation small={true} /> Creating...
-                </>
-              ) : (
-                "Sign Up"
-              )}
-            </motion.button>
+              {loading ? <LoadingAnimation small /> : "Sign Up"}
+            </button>
           </form>
 
-          <div className="flex items-center justify-center opacity-60 my-5">
-            <span className="border-b border-base-300 w-1/4"></span>
-            <span className="mx-2 text-sm">or</span>
-            <span className="border-b border-base-300 w-1/4"></span>
-          </div>
+          <div className="divider my-5">OR</div>
 
           <motion.button
             whileTap={{ scale: 0.97 }}
             onClick={handleGoogleLogin}
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 border border-base-300 py-2.5 rounded-lg bg-base-100 shadow-sm transition hover:bg-base-300"
+            className="btn w-full bg-base-200 border border-base-300 hover:bg-base-300 flex items-center justify-center gap-2"
           >
-            {loading && <LoadingAnimation small={true} />}
             <FcGoogle size={22} /> Continue with Google
           </motion.button>
 
           <p className="text-center opacity-70 mt-5 text-sm">
             Already have an account?{" "}
-            <Link to="/login" className="text-primary font-medium hover:underline">
+            <Link
+              to="/login"
+              className="text-primary font-medium hover:underline"
+            >
               Login
             </Link>
           </p>
         </motion.div>
       </motion.div>
-
       <motion.div
         initial={{ opacity: 0, x: 60 }}
         animate={{ opacity: 1, x: 0 }}

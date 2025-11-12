@@ -16,43 +16,58 @@ import { AuthContext } from "../../Provider/AuthProvider";
 const Signin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const auth = getAuth();
-  const { user } = useContext(AuthContext);
   const googleProvider = new GoogleAuthProvider();
+  const { user } = useContext(AuthContext);
 
-  const from = location.state?.from || "/";
+  const from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 400);
+    const timer = setTimeout(() => setInitialLoading(false), 400);
     return () => clearTimeout(timer);
   }, []);
 
-  if (loading) return <LoadingSpinner />;
+  if (initialLoading) return <LoadingSpinner />;
 
   const handleChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
     try {
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
-      toast.success("Signed in successfully!");
-      navigate(from, { replace: true });
+      toast.success("🎬 Signed in successfully!");
+      setTimeout(() => navigate(from, { replace: true }), 800);
     } catch (error) {
-      toast.error("Invalid Email or Password!");
+      console.error("Login Error:", error.code);
+      let message = "Login failed!";
+      if (error.code === "auth/invalid-email") message = "Invalid email address!";
+      else if (error.code === "auth/user-not-found") message = "User not found!";
+      else if (error.code === "auth/wrong-password") message = "Wrong password!";
+      else if (error.code === "auth/too-many-requests")
+        message = "Too many attempts. Try again later.";
+      toast.error(`❌ ${message}`);
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const handleGoogleLogin = async () => {
+    setSubmitting(true);
     try {
       await signInWithPopup(auth, googleProvider);
-      toast.success("Signed in with Google!");
-      navigate(from, { replace: true });
-    } catch {
-      toast.error("Google sign-in failed. Try again later.");
+      toast.success("✅ Signed in with Google!");
+      setTimeout(() => navigate(from, { replace: true }), 800);
+    } catch (err) {
+      console.error("Google sign-in failed:", err);
+      toast.error("❌ Google sign-in failed. Try again later.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -90,6 +105,7 @@ const Signin = () => {
           <motion.button
             whileTap={{ scale: 0.97 }}
             onClick={handleGoogleLogin}
+            disabled={submitting}
             className="w-full flex items-center justify-center gap-2 border border-base-300 py-2.5 rounded-lg bg-base-100 shadow-sm transition hover:bg-base-300 mb-4"
           >
             <FcGoogle size={22} /> Continue with Google
@@ -138,9 +154,10 @@ const Signin = () => {
             <motion.button
               whileTap={{ scale: 0.96 }}
               type="submit"
+              disabled={submitting}
               className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-2.5 rounded-lg font-semibold hover:opacity-90 transition"
             >
-              Log In
+              {submitting ? "Logging in..." : "Log In"}
             </motion.button>
           </form>
 

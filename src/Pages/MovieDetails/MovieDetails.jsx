@@ -19,11 +19,15 @@ const MovieDetails = () => {
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/movies/${id}`);
+        const res = await axios.get(
+          `https://moviemaster-pro-server.vercel.app/movies/${id}`
+        );
         setMovie(res.data);
 
         if (user?.email) {
-          const watchlistRes = await axios.get(`http://localhost:3000/watchlist/${user.email}`);
+          const watchlistRes = await axios.get(
+            `https://moviemaster-pro-server.vercel.app/watchlist/${user.email}`
+          );
           const found = watchlistRes.data.find((m) => m._id === res.data._id);
           setIsInWatchlist(!!found);
         }
@@ -48,18 +52,25 @@ const MovieDetails = () => {
     setProcessing(true);
     try {
       if (isInWatchlist) {
-        const res = await axios.get(`http://localhost:3000/watchlist/${user.email}`);
+        const res = await axios.get(
+          `https://moviemaster-pro-server.vercel.app/watchlist/${user.email}`
+        );
         const item = res.data.find((m) => m._id === movie._id);
         if (item) {
-          await axios.delete(`http://localhost:3000/watchlist/${user.email}/${item._id}`);
+          await axios.delete(
+            `https://moviemaster-pro-server.vercel.app/watchlist/${user.email}/${item._id}`
+          );
           setIsInWatchlist(false);
           toast.success(`Removed "${movie.title}" from Watchlist ❌`);
         }
       } else {
-        await axios.post("http://localhost:3000/watchlist", {
-          userEmail: user.email,
-          movieId: movie._id,
-        });
+        await axios.post(
+          "https://moviemaster-pro-server.vercel.app/watchlist",
+          {
+            userEmail: user.email,
+            movieId: movie._id,
+          }
+        );
         setIsInWatchlist(true);
         toast.success(`Added "${movie.title}" to Watchlist ❤️`);
       }
@@ -205,7 +216,9 @@ const MovieDetails = () => {
 
       <dialog id="delete_modal" className="modal">
         <div className="modal-box bg-base-200 text-center">
-          <h3 className="text-lg font-bold text-red-500 mb-3">⚠️ Confirm Delete</h3>
+          <h3 className="text-lg font-bold text-red-500 mb-3">
+            ⚠️ Confirm Delete
+          </h3>
           <p className="text-base-content/80 mb-6">
             Are you sure you want to delete{" "}
             <span className="font-semibold">{movie.title}</span>?

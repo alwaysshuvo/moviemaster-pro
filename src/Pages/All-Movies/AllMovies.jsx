@@ -11,7 +11,9 @@ const AllMovies = () => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/movies");
+        const res = await axios.get(
+          "https://moviemaster-pro-server.vercel.app/movies"
+        );
         setMovies(res.data);
       } catch (error) {
         console.error("❌ Error fetching movies:", error);
@@ -36,7 +38,8 @@ const AllMovies = () => {
           🎬 All Movies
         </h2>
         <p className="text-base-content/80 text-lg max-w-2xl mx-auto">
-          Explore all your favorite movies — discover stories, ratings, and cinematic experiences like never before.
+          Explore all your favorite movies — discover stories, ratings, and
+          cinematic experiences like never before.
         </p>
         <div className="mt-6 flex justify-center">
           <div className="h-1 w-32 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"></div>

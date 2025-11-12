@@ -5,13 +5,13 @@ import MainLayout from "../MainLayout/MainLayout";
 import ForgotPassword from "../Pages/ForgotPassword/ForgotPassword";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import PublicRoute from "./PublicRoute/PublicRoute";
-import AllMovies from "../Pages/All-Movies/AllMovies";
 import MyCollection from "../Pages/My-Collection/MyCollection";
 import AddMovie from "../Pages/AddMovie/AddMovie";
 import MovieDetails from "../Pages/MovieDetails/MovieDetails";
 import FilterMovies from "../Pages/Filter/FilterMovies";
 import Watchlist from "../Pages/Watchlist/Watchlist";
 import UpdateMovie from "../Pages/UpdateMovie/UpdateMovie";
+import AllMovies from "../Pages/All-Movies/AllMovies";
 
 const Home = lazy(() => import("../Pages/Home/Home"));
 const Login = lazy(() => import("../Pages/Login/Login"));
@@ -30,7 +30,9 @@ const router = createBrowserRouter([
           </Suspense>
         ),
         loader: async () => {
-          const res = await fetch("http://localhost:3000/movies");
+          const res = await fetch(
+            "https://moviemaster-pro-server.vercel.app/movies"
+          );
           return res.json();
         },
       },
@@ -42,7 +44,9 @@ const router = createBrowserRouter([
           </Suspense>
         ),
         loader: async () => {
-          const res = await fetch("http://localhost:3000/movies");
+          const res = await fetch(
+            "https://moviemaster-pro-server.vercel.app/movies"
+          );
           return res.json();
         },
       },
@@ -119,7 +123,7 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner />}>
             <PrivateRoute>
-             <ForgotPassword />
+              <ForgotPassword />
             </PrivateRoute>
           </Suspense>
         ),

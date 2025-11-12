@@ -41,7 +41,10 @@ const AddMovie = ({ onMovieAdded }) => {
         createdAt: new Date(),
       };
 
-      const res = await axios.post("http://localhost:3000/movies", newMovie);
+      const res = await axios.post(
+        "https://moviemaster-pro-server.vercel.app/movies",
+        newMovie
+      );
       toast.success("🎬 Movie added successfully!");
       setMovie({
         title: "",

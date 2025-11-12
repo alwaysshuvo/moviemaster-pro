@@ -13,9 +13,21 @@ const Footer = () => {
         <div>
           <h4 className="font-semibold mb-3">Quick Links</h4>
           <ul className="space-y-2 text-sm">
-            <li><a href="/" className="hover:text-primary">Home</a></li>
-            <li><a href="/all-movies" className="hover:text-primary">All Movies</a></li>
-            <li><a href="/movies/add" className="hover:text-primary">Add Movie</a></li>
+            <li>
+              <a href="/" className="hover:text-primary">
+                Home
+              </a>
+            </li>
+            <li>
+              <a href="/movies" className="hover:text-primary">
+                All Movies
+              </a>
+            </li>
+            <li>
+              <a href="/movies/add" className="hover:text-primary">
+                Add Movie
+              </a>
+            </li>
           </ul>
         </div>
         <div>

@@ -13,7 +13,9 @@ const UpdateMovie = () => {
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/movies/${id}`);
+        const res = await axios.get(
+          `https://moviemaster-pro-server.vercel.app/movies/${id}`
+        );
         setMovie(res.data);
       } catch (err) {
         toast.error("Failed to load movie details.");
@@ -30,7 +32,10 @@ const UpdateMovie = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.put(`http://localhost:3000/movies/${id}`, movie);
+      await axios.put(
+        `https://moviemaster-pro-server.vercel.app/movies/${id}`,
+        movie
+      );
       toast.success("✅ Movie updated successfully!");
       setTimeout(() => navigate("/movies/my-collection"), 1000);
     } catch (err) {
@@ -42,7 +47,9 @@ const UpdateMovie = () => {
 
   if (!movie)
     return (
-      <p className="text-center text-gray-500 mt-20">Loading movie details...</p>
+      <p className="text-center text-gray-500 mt-20">
+        Loading movie details...
+      </p>
     );
 
   return (
@@ -58,7 +65,10 @@ const UpdateMovie = () => {
           ✏️ Update Movie
         </h2>
 
-        <form onSubmit={handleUpdate} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form
+          onSubmit={handleUpdate}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
           <input
             type="text"
             name="title"

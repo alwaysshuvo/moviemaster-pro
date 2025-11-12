@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {
-  Autoplay,
-  Pagination,
-  Navigation,
-  EffectFade,
-} from "swiper/modules";
+import { Autoplay, Pagination, Navigation, EffectFade } from "swiper/modules";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -19,7 +14,7 @@ const HeroCarousel = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/movies")
+      .get("https://moviemaster-pro-server.vercel.app/movies")
       .then((res) => setMovies(res.data.slice(0, 6)))
       .catch((err) => console.error("❌ Error fetching movies:", err));
   }, []);
@@ -45,23 +40,23 @@ const HeroCarousel = () => {
         navigation
         loop
         speed={1000}
-        className="h-[85vh] md:h-[90vh] lg:h-[95vh]"
+        className="h-[90vh] md:h-[95vh]"
       >
         {movies.map((movie) => (
           <SwiperSlide key={movie._id}>
             <Link to={`/movies/${movie._id}`}>
-              {/* 🎬 Background wrapper */}
+              {/* 🎬 Background Wrapper */}
               <div
                 className="relative w-full h-full group flex items-center justify-center"
                 style={{
-                  background: `radial-gradient(circle at center, rgba(20,20,20,0.95) 0%, rgba(0,0,0,0.9) 100%)`,
+                  background: `radial-gradient(circle at center, rgba(10,10,10,0.95) 0%, rgba(0,0,0,0.9) 100%)`,
                 }}
               >
-                {/* 🎥 Movie poster */}
+                {/* 🎥 Movie Poster */}
                 <img
                   src={movie.posterUrl}
                   alt={movie.title}
-                  className="max-h-[95vh] w-auto object-contain transition-all duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover md:object-contain transition-all duration-700 group-hover:scale-105 rounded-lg"
                   onError={(e) => {
                     e.target.src =
                       "https://dummyimage.com/1920x1080/000/fff&text=No+Image";
@@ -69,10 +64,10 @@ const HeroCarousel = () => {
                 />
 
                 {/* 🎨 Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent" />
 
                 {/* 🎬 Movie Details */}
-                <div className="absolute bottom-[10%] left-[8%] text-white max-w-2xl z-10 drop-shadow-lg">
+                <div className="absolute bottom-[12%] left-[8%] text-white max-w-2xl z-10 drop-shadow-lg">
                   <motion.h2
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}

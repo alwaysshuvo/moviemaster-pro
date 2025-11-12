@@ -12,7 +12,7 @@ const SectionRow = ({ title, limit, startIndex }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/movies")
+      .get("https://moviemaster-pro-server.vercel.app/movies")
       .then((res) => setMovies(res.data.slice(startIndex, startIndex + limit)))
       .catch((err) => console.error("❌ Error fetching movies:", err));
   }, [limit, startIndex]);
@@ -22,7 +22,7 @@ const SectionRow = ({ title, limit, startIndex }) => {
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-3xl font-bold text-base-content">{title}</h3>
         <Link
-          to="/all-movies"
+          to="/movies"
           className="text-sm text-primary hover:underline font-semibold"
         >
           See All →
@@ -63,9 +63,11 @@ const SectionRow = ({ title, limit, startIndex }) => {
                   />
                 </div>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent 
+                <div
+                  className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent 
                 opacity-0 group-hover:opacity-100 transition-opacity duration-500 
-                rounded-2xl flex flex-col justify-end p-4 backdrop-blur-[1px]">
+                rounded-2xl flex flex-col justify-end p-4 backdrop-blur-[1px]"
+                >
                   <h4 className="text-lg font-semibold text-white truncate">
                     {movie.title}
                   </h4>

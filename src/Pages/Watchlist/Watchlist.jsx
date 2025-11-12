@@ -14,7 +14,7 @@ const Watchlist = () => {
   useEffect(() => {
     if (!user?.email) return;
     axios
-      .get(`http://localhost:3000/watchlist/${user.email}`)
+      .get(`https://moviemaster-pro-server.vercel.app/watchlist/${user.email}`)
       .then((res) => setWatchlist(res.data))
       .catch(() => setWatchlist([]));
   }, [user]);
@@ -27,7 +27,9 @@ const Watchlist = () => {
 
   const confirmRemove = async () => {
     try {
-      await axios.delete(`http://localhost:3000/watchlist/${user.email}/${deleteId}`);
+      await axios.delete(
+        `https://moviemaster-pro-server.vercel.app/watchlist/${user.email}/${deleteId}`
+      );
       setWatchlist(watchlist.filter((item) => item._id !== deleteId));
       toast.success(`Removed "${deleteTitle}" from watchlist!`);
     } catch (err) {
@@ -125,13 +127,19 @@ const Watchlist = () => {
 
       <dialog id="delete_modal" className="modal">
         <div className="modal-box bg-base-200 text-center">
-          <h3 className="text-lg font-bold text-red-500 mb-3">⚠️ Confirm Removal</h3>
+          <h3 className="text-lg font-bold text-red-500 mb-3">
+            ⚠️ Confirm Removal
+          </h3>
           <p className="text-base-content/80 mb-6">
             Are you sure you want to remove{" "}
-            <span className="font-semibold">{deleteTitle}</span> from your watchlist?
+            <span className="font-semibold">{deleteTitle}</span> from your
+            watchlist?
           </p>
           <div className="flex justify-center gap-4">
-            <button onClick={confirmRemove} className="btn btn-error text-white">
+            <button
+              onClick={confirmRemove}
+              className="btn btn-error text-white"
+            >
               Yes, Remove
             </button>
             <form method="dialog">
