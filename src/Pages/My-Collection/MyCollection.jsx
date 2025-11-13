@@ -96,7 +96,7 @@ const MyCollection = () => {
 
       {movies.length === 0 ? (
         <div className="flex flex-col justify-center items-center h-60 text-gray-500 text-lg">
-          😢 You haven’t added any movies yet.
+           You haven’t added any movies yet.
           <Link
             to="/movies/add"
             className="btn btn-primary mt-4 text-white font-semibold"

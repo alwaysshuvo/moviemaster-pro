@@ -5,17 +5,17 @@ import MainLayout from "../MainLayout/MainLayout";
 import ForgotPassword from "../Pages/ForgotPassword/ForgotPassword";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import PublicRoute from "./PublicRoute/PublicRoute";
-import MyCollection from "../Pages/My-Collection/MyCollection";
-import AddMovie from "../Pages/AddMovie/AddMovie";
-import MovieDetails from "../Pages/MovieDetails/MovieDetails";
-import FilterMovies from "../Pages/Filter/FilterMovies";
-import Watchlist from "../Pages/Watchlist/Watchlist";
-import UpdateMovie from "../Pages/UpdateMovie/UpdateMovie";
-import AllMovies from "../Pages/All-Movies/AllMovies";
 
 const Home = lazy(() => import("../Pages/Home/Home"));
 const Login = lazy(() => import("../Pages/Login/Login"));
 const Signup = lazy(() => import("../Pages/Signup/Signup"));
+const AllMovies = lazy(() => import("../Pages/All-Movies/AllMovies"));
+const AddMovie = lazy(() => import("../Pages/AddMovie/AddMovie"));
+const MyCollection = lazy(() => import("../Pages/My-Collection/MyCollection"));
+const MovieDetails = lazy(() => import("../Pages/MovieDetails/MovieDetails"));
+const UpdateMovie = lazy(() => import("../Pages/UpdateMovie/UpdateMovie"));
+const Watchlist = lazy(() => import("../Pages/Watchlist/Watchlist"));
+const FilterMovies = lazy(() => import("../Pages/Filter/FilterMovies"));
 
 const router = createBrowserRouter([
   {
@@ -37,6 +37,7 @@ const router = createBrowserRouter([
           return res.json();
         },
       },
+
       {
         path: "/movies",
         element: (
@@ -52,6 +53,7 @@ const router = createBrowserRouter([
           return res.json();
         },
       },
+
       {
         path: "/movies/add",
         element: (
@@ -62,6 +64,7 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+
       {
         path: "/movies/my-collection",
         element: (
@@ -72,6 +75,7 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+
       {
         path: "/movies/update/:id",
         element: (
@@ -82,6 +86,7 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+
       {
         path: "/movies/:id",
         element: (
@@ -90,6 +95,7 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+
       {
         path: "/watchlist",
         element: (
@@ -100,6 +106,16 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+
+      {
+        path: "/filter",
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <FilterMovies />
+          </Suspense>
+        ),
+      },
+
       {
         path: "/login",
         element: (
@@ -110,6 +126,7 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+
       {
         path: "/signup",
         element: (
@@ -120,6 +137,7 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+
       {
         path: "/forgot-password",
         element: (

@@ -4,24 +4,29 @@ import { AuthContext } from "../../Provider/AuthProvider";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
+import LoadingSpinner from "../../Components/LoadingSpinner/LoadingSpinner";
 
 const Watchlist = () => {
   const { user } = useContext(AuthContext);
+
+  const [pageLoading, setPageLoading] = useState(true);
   const [watchlist, setWatchlist] = useState([]);
   const [deleteId, setDeleteId] = useState(null);
   const [deleteTitle, setDeleteTitle] = useState("");
 
   useEffect(() => {
+    const timer = setTimeout(() => setPageLoading(false), 700);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
     if (!user?.email) return;
-    if (user?.email) {
-      const encodedEmail = encodeURIComponent(user.email);
-      api
-        .get(`/watchlist/${encodedEmail}`)
-        .then((res) => setWatchlist(res.data))
-        .catch(() => setWatchlist([]));
-    } else {
-      setWatchlist([]);
-    }
+    const encodedEmail = encodeURIComponent(user.email);
+
+    api
+      .get(`/watchlist/${encodedEmail}`)
+      .then((res) => setWatchlist(res.data))
+      .catch(() => setWatchlist([]));
   }, [user]);
 
   const openDeleteModal = (id, title) => {
@@ -38,7 +43,7 @@ const Watchlist = () => {
       );
       setWatchlist(watchlist.filter((item) => item._id !== deleteId));
       toast.success(`Removed "${deleteTitle}" from watchlist!`);
-    } catch (err) {
+    } catch {
       toast.error("Failed to remove movie.");
     } finally {
       const modal = document.getElementById("delete_modal");
@@ -46,9 +51,12 @@ const Watchlist = () => {
     }
   };
 
+  if (pageLoading) return <LoadingSpinner />;
+
   return (
     <div className="bg-base-100 text-base-content min-h-screen py-20 transition-all duration-300">
       <Toaster position="top-center" />
+
       <motion.div
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}

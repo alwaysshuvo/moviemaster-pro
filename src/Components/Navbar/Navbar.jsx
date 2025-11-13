@@ -49,6 +49,7 @@ const Navbar = ({ theme, setTheme }) => {
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-lg bg-base-100/70 border-b border-base-300 shadow-sm transition-all duration-300">
       <Toaster position="top-center" />
+
       <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-3">
         <div className="flex items-center gap-3">
           <motion.button
@@ -62,14 +63,20 @@ const Navbar = ({ theme, setTheme }) => {
 
           <Link
             to="/"
-            className="flex items-center gap-2 font-extrabold text-xl sm:text-2xl"
+            className="flex items-center gap-[4px] font-extrabold text-xl sm:text-2xl"
           >
-            <img
-              src="https://i.ibb.co.com/CKkRHw70/Untitled-design.png"
-              alt="Logo"
-              className="w-9 h-9 sm:w-10 sm:h-10"
-            />
-            <span>
+            <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center">
+              <img
+                src="https://i.ibb.co.com/PzMVBr3h/Chat-GPT-Image-Nov-13-2025-03-22-06-PM.png"
+                alt="Logo"
+                className="w-12 h-12 sm:w-14 sm:h-14 object-contain"
+              />
+            </div>
+
+            <span
+              className="leading-none ml-[-10px]
+"
+            >
               Movie<span className="text-primary">Matrix</span>
             </span>
           </Link>
@@ -82,10 +89,10 @@ const Navbar = ({ theme, setTheme }) => {
               to={link.path}
               end
               className={({ isActive }) =>
-                `relative transition-all duration-300 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-500 ${
+                `relative transition-all duration-300 ${
                   isActive
                     ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500 font-semibold"
-                    : "text-base-content"
+                    : "text-base-content hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-500"
                 }`
               }
             >
@@ -150,13 +157,13 @@ const Navbar = ({ theme, setTheme }) => {
             <div className="flex items-center gap-2">
               <Link
                 to="/login"
-                className="btn btn-sm bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold border-none"
+                className="btn btn-sm bg-gradient-to-r from-pink-500 to-purple-500 text-white border-none"
               >
                 Login
               </Link>
               <Link
                 to="/signup"
-                className="btn btn-sm bg-gradient-to-l from-pink-500 to-purple-500 text-white font-semibold border-none"
+                className="btn btn-sm bg-gradient-to-l from-pink-500 to-purple-500 text-white border-none"
               >
                 Register
               </Link>
@@ -205,6 +212,7 @@ const Navbar = ({ theme, setTheme }) => {
                   </NavLink>
                 </li>
               ))}
+
               {user ? (
                 <li>
                   <button
@@ -232,6 +240,7 @@ const Navbar = ({ theme, setTheme }) => {
                       Login
                     </Link>
                   </li>
+
                   <li>
                     <Link
                       to="/signup"

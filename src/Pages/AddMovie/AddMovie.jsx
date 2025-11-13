@@ -1,12 +1,15 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { motion } from "framer-motion";
 import api from "../../utils/api";
 import toast, { Toaster } from "react-hot-toast";
 import { AuthContext } from "../../Provider/AuthProvider";
+import LoadingSpinner from "../../Components/LoadingSpinner/LoadingSpinner";
 
 const AddMovie = () => {
   const { user } = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
+
+  const [pageLoading, setPageLoading] = useState(true);
+  const [formLoading, setFormLoading] = useState(false);
 
   const [movie, setMovie] = useState({
     title: "",
@@ -22,18 +25,25 @@ const AddMovie = () => {
     posterUrl: "",
   });
 
+  useEffect(() => {
+    const timer = setTimeout(() => setPageLoading(false), 700);
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleChange = (e) => {
     setMovie({ ...movie, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!user?.email) {
       toast.error("Please log in before adding a movie!");
       return;
     }
 
-    setLoading(true);
+    setFormLoading(true);
+
     try {
       const newMovie = {
         ...movie,
@@ -42,7 +52,9 @@ const AddMovie = () => {
       };
 
       await api.post("/movies", newMovie);
+
       toast.success("🎬 Movie added successfully!");
+
       setMovie({
         title: "",
         genre: "",
@@ -59,13 +71,29 @@ const AddMovie = () => {
     } catch {
       toast.error("❌ Failed to add movie");
     } finally {
-      setLoading(false);
+      setFormLoading(false);
     }
   };
+
+  const formFields = [
+    "title",
+    "genre",
+    "director",
+    "cast",
+    "releaseYear",
+    "rating",
+    "duration",
+    "language",
+    "country",
+    "posterUrl",
+  ];
+
+  if (pageLoading) return <LoadingSpinner />;
 
   return (
     <div className="min-h-screen bg-base-100 text-base-content py-20 px-6 md:px-16">
       <Toaster position="top-center" />
+
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -75,22 +103,9 @@ const AddMovie = () => {
         <h2 className="text-4xl font-extrabold text-center mb-10 text-primary">
           🎥 Add a New Movie
         </h2>
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
-          {[
-            "title",
-            "genre",
-            "director",
-            "cast",
-            "releaseYear",
-            "rating",
-            "duration",
-            "language",
-            "country",
-            "posterUrl",
-          ].map((field) => (
+
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {formFields.map((field) => (
             <input
               key={field}
               type={
@@ -109,13 +124,14 @@ const AddMovie = () => {
               placeholder={
                 field === "posterUrl"
                   ? "Poster URL"
-                  : field.charAt(0).toUpperCase() + field.slice(1)
+                  : field.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase())
               }
               className={`input input-bordered w-full rounded-xl ${
                 field === "posterUrl" ? "md:col-span-2" : ""
               }`}
             />
           ))}
+
           <textarea
             name="plotSummary"
             value={movie.plotSummary}
@@ -128,10 +144,10 @@ const AddMovie = () => {
           <motion.button
             type="submit"
             whileTap={{ scale: 0.95 }}
-            disabled={loading}
+            disabled={formLoading}
             className="btn btn-primary md:col-span-2 rounded-xl text-lg font-semibold mt-4"
           >
-            {loading ? "Adding..." : "Add Movie 🎬"}
+            {formLoading ? "Adding..." : "Add Movie 🎬"}
           </motion.button>
         </form>
       </motion.div>
