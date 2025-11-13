@@ -30,9 +30,10 @@ const router = createBrowserRouter([
           </Suspense>
         ),
         loader: async () => {
-          const res = await fetch(
-            "https://moviemaster-pro-server-private.vercel.app/movies"
-          );
+          const base =
+            import.meta.env.VITE_API_BASE ||
+            "https://moviemaster-pro-server-private.vercel.app";
+          const res = await fetch(`${base}/movies`);
           return res.json();
         },
       },
@@ -44,9 +45,10 @@ const router = createBrowserRouter([
           </Suspense>
         ),
         loader: async () => {
-          const res = await fetch(
-            "https://moviemaster-pro-server-private.vercel.app/movies"
-          );
+          const base =
+            import.meta.env.VITE_API_BASE ||
+            "https://moviemaster-pro-server-private.vercel.app";
+          const res = await fetch(`${base}/movies`);
           return res.json();
         },
       },

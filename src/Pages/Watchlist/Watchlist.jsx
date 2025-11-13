@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
+import api from "../../utils/api";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -13,31 +13,36 @@ const Watchlist = () => {
 
   useEffect(() => {
     if (!user?.email) return;
-    axios
-      .get(
-        `https://moviemaster-pro-server-private.vercel.app/watchlist/${user.email}`
-      )
-      .then((res) => setWatchlist(res.data))
-      .catch(() => setWatchlist([]));
+    if (user?.email) {
+      const encodedEmail = encodeURIComponent(user.email);
+      api
+        .get(`/watchlist/${encodedEmail}`)
+        .then((res) => setWatchlist(res.data))
+        .catch(() => setWatchlist([]));
+    } else {
+      setWatchlist([]);
+    }
   }, [user]);
 
   const openDeleteModal = (id, title) => {
     setDeleteId(id);
     setDeleteTitle(title);
-    document.getElementById("delete_modal").showModal();
+    const modal = document.getElementById("delete_modal");
+    if (modal && typeof modal.showModal === "function") modal.showModal();
   };
 
   const confirmRemove = async () => {
     try {
-      await axios.delete(
-        `https://moviemaster-pro-server-private.vercel.app/watchlist/${user.email}/${deleteId}`
+      await api.delete(
+        `/watchlist/${encodeURIComponent(user.email)}/${deleteId}`
       );
       setWatchlist(watchlist.filter((item) => item._id !== deleteId));
       toast.success(`Removed "${deleteTitle}" from watchlist!`);
     } catch (err) {
       toast.error("Failed to remove movie.");
     } finally {
-      document.getElementById("delete_modal").close();
+      const modal = document.getElementById("delete_modal");
+      if (modal && typeof modal.close === "function") modal.close();
     }
   };
 

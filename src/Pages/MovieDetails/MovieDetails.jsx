@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import LoadingSpinner from "../../Components/LoadingSpinner/LoadingSpinner";
 import { AuthContext } from "../../Provider/AuthProvider";
-import axios from "axios";
+import api from "../../utils/api";
 
 const MovieDetails = () => {
   const { id } = useParams();
@@ -19,15 +19,12 @@ const MovieDetails = () => {
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const res = await axios.get(
-          `https://moviemaster-pro-server-private.vercel.app/movies/${id}`
-        );
+        const res = await api.get(`/movies/${id}`);
         setMovie(res.data);
 
         if (user?.email) {
-          const watchlistRes = await axios.get(
-            `https://moviemaster-pro-server-private.vercel.app/watchlist/${user.email}`
-          );
+          const encodedEmail = encodeURIComponent(user.email);
+          const watchlistRes = await api.get(`/watchlist/${encodedEmail}`);
           const found = watchlistRes.data.find(
             (m) => m.movieId === res.data._id
           );
@@ -55,25 +52,19 @@ const MovieDetails = () => {
     setProcessing(true);
     try {
       if (isInWatchlist) {
-        const res = await axios.get(
-          `https://moviemaster-pro-server-private.vercel.app/watchlist/${user.email}`
-        );
+        const encodedEmail = encodeURIComponent(user.email);
+        const res = await api.get(`/watchlist/${encodedEmail}`);
         const item = res.data.find((m) => m.movieId === movie._id);
         if (item) {
-          await axios.delete(
-            `https://moviemaster-pro-server-private.vercel.app/watchlist/${user.email}/${item._id}`
-          );
+          await api.delete(`/watchlist/${encodedEmail}/${item._id}`);
           setIsInWatchlist(false);
           toast.success(`Removed "${movie.title}" from Watchlist ❌`);
         }
       } else {
-        await axios.post(
-          "https://moviemaster-pro-server-private.vercel.app/watchlist",
-          {
-            userEmail: user.email,
-            movieId: movie._id,
-          }
-        );
+        await api.post("/watchlist", {
+          userEmail: user.email,
+          movieId: movie._id,
+        });
         setIsInWatchlist(true);
         toast.success(`Added "${movie.title}" to Watchlist ❤️`);
       }
@@ -87,11 +78,10 @@ const MovieDetails = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(
-        `https://moviemaster-pro-server-private.vercel.app/movies/${movie._id}`
-      );
+      await api.delete(`/movies/${movie._id}`);
       toast.success("🎬 Movie deleted successfully!");
-      document.getElementById("delete_modal").close();
+      const modal = document.getElementById("delete_modal");
+      if (modal && typeof modal.close === "function") modal.close();
       setTimeout(() => navigate("/movies/my-collection"), 1000);
     } catch (error) {
       toast.error("❌ Failed to delete movie.");

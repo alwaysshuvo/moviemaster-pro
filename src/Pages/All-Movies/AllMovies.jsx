@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import api from "../../utils/api";
 import LoadingSpinner from "../../Components/LoadingSpinner/LoadingSpinner";
 
 const AllMovies = () => {
@@ -11,9 +11,7 @@ const AllMovies = () => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const res = await axios.get(
-          "https://moviemaster-pro-server-private.vercel.app/movies"
-        );
+        const res = await api.get(`/movies`);
         setMovies(res.data);
       } catch (error) {
         console.error("❌ Error fetching movies:", error);

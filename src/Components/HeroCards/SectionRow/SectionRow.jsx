@@ -4,15 +4,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import axios from "axios";
+import api from "../../../utils/api";
 import { motion } from "framer-motion";
 
 const SectionRow = ({ title, limit, startIndex }) => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("https://moviemaster-pro-server-private.vercel.app/movies")
+    api
+      .get(`/movies`)
       .then((res) => setMovies(res.data.slice(startIndex, startIndex + limit)))
       .catch((err) => console.error("❌ Error fetching movies:", err));
   }, [limit, startIndex]);

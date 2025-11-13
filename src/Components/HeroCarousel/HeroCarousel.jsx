@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation, EffectFade } from "swiper/modules";
-import axios from "axios";
+import api from "../../utils/api";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import "swiper/css";
@@ -13,8 +13,8 @@ const HeroCarousel = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("https://moviemaster-pro-server-private.vercel.app/movies")
+    api
+      .get("/movies")
       .then((res) => setMovies(res.data.slice(0, 6)))
       .catch((err) => console.error("❌ Error fetching movies:", err));
   }, []);

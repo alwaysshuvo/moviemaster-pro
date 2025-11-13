@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../utils/api";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -13,11 +13,10 @@ const UpdateMovie = () => {
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const res = await axios.get(
-          `https://moviemaster-pro-server.vercel.app/movies/${id}`
-        );
+        const res = await api.get(`/movies/${id}`);
         setMovie(res.data);
       } catch (err) {
+        console.error("Failed to load movie details:", err);
         toast.error("Failed to load movie details.");
       }
     };
@@ -32,10 +31,20 @@ const UpdateMovie = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.put(`http://localhost:3000/movies/${id}`, movie);
+      // Prepare payload: remove immutable _id and convert numeric fields
+      const payload = { ...movie };
+      if (Object.prototype.hasOwnProperty.call(payload, "_id"))
+        delete payload._id;
+      if (payload.releaseYear)
+        payload.releaseYear = Number(payload.releaseYear);
+      if (payload.rating) payload.rating = Number(payload.rating);
+      if (payload.duration) payload.duration = Number(payload.duration);
+
+      await api.put(`/movies/${id}`, payload);
       toast.success("✅ Movie updated successfully!");
       setTimeout(() => navigate("/movies/my-collection"), 1000);
     } catch (err) {
+      console.error("Update failed:", err);
       toast.error("❌ Update failed!");
     } finally {
       setLoading(false);

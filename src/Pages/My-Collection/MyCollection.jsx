@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../utils/api";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { motion } from "framer-motion";
@@ -17,9 +17,8 @@ const MyCollection = () => {
     if (!user?.email) return;
     const fetchUserMovies = async () => {
       try {
-        const res = await axios.get(
-          `https://moviemaster-pro-server-private.vercel.app/movies/user/${user.email}`
-        );
+        const encodedEmail = encodeURIComponent(user.email);
+        const res = await api.get(`/movies/user/${encodedEmail}`);
         setMovies(res.data);
       } catch {
         toast.error("Failed to fetch movies");
@@ -33,20 +32,20 @@ const MyCollection = () => {
   const openDeleteModal = (id, title) => {
     setDeleteId(id);
     setDeleteTitle(title);
-    document.getElementById("delete_modal").showModal();
+    const modal = document.getElementById("delete_modal");
+    if (modal && typeof modal.showModal === "function") modal.showModal();
   };
 
   const confirmDelete = async () => {
     try {
-      await axios.delete(
-        `https://moviemaster-pro-server-private.vercel.app/movies/${deleteId}`
-      );
+      await api.delete(`/movies/${deleteId}`);
       setMovies((prev) => prev.filter((m) => m._id !== deleteId));
       toast.success(`"${deleteTitle}" deleted successfully!`);
     } catch {
       toast.error("Failed to delete movie.");
     } finally {
-      document.getElementById("delete_modal").close();
+      const modal = document.getElementById("delete_modal");
+      if (modal && typeof modal.close === "function") modal.close();
     }
   };
 
@@ -71,6 +70,29 @@ const MyCollection = () => {
           <div className="h-1 w-32 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"></div>
         </div>
       </motion.div>
+
+      <dialog id="delete_modal" className="modal">
+        <div className="modal-box bg-base-200 text-center">
+          <h3 className="text-lg font-bold text-red-500 mb-3">
+            ⚠️ Confirm Delete
+          </h3>
+          <p className="text-base-content/80 mb-6">
+            Are you sure you want to delete{" "}
+            <span className="font-semibold">{deleteTitle}</span>?
+          </p>
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={confirmDelete}
+              className="btn btn-error text-white"
+            >
+              Yes, Delete
+            </button>
+            <form method="dialog">
+              <button className="btn">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
 
       {movies.length === 0 ? (
         <div className="flex flex-col justify-center items-center h-60 text-gray-500 text-lg">

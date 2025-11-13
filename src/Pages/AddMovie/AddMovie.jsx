@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { motion } from "framer-motion";
-import axios from "axios";
+import api from "../../utils/api";
 import toast, { Toaster } from "react-hot-toast";
 import { AuthContext } from "../../Provider/AuthProvider";
 
@@ -41,10 +41,7 @@ const AddMovie = () => {
         createdAt: new Date(),
       };
 
-      await axios.post(
-        "https://moviemaster-pro-server-private.vercel.app/movies",
-        newMovie
-      );
+      await api.post("/movies", newMovie);
       toast.success("🎬 Movie added successfully!");
       setMovie({
         title: "",
