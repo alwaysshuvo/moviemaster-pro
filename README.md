@@ -20,7 +20,7 @@ Built with React, Firebase & TailwindCSS — fully responsive and user-centric.
 ## 📸 Screenshots
 
 ### 🎬 Homepage UI
-![Movie Master Preview](https://i.ibb.co/CpvPzYXw/0673-F696-2-B8-B-4612-9491-B88-D2325011-D.png)
+![Movie Master Preview](https://i.postimg.cc/HkvHfhfV/d83e51d7-21b3-4938-aa11-b5a980d5979e.jpg)
 
 
 ## ⭐ Features
