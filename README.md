@@ -19,7 +19,7 @@ Built with React, Firebase & TailwindCSS — fully responsive and user-centric.
 ## 📸 Screenshot Preview
 
 ### 🎬 Homepage UI
-![Movie Master Preview](https://i.ibb.co.com/svrhvcjr/screencapture-movie-matrix10-netlify-app-2025-11-19-15-14-36.png)
+![Movie Master Preview](https://i.ibb.co.com/R4CHbFy3/Movie-Matrix.png)
 
 ---
 
