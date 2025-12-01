@@ -89,20 +89,18 @@ const Navbar = ({ theme, setTheme }) => {
               to={link.path}
               end
               className={({ isActive }) =>
-                `relative transition-all duration-300 ${
-                  isActive
-                    ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500 font-semibold"
-                    : "text-base-content hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-500"
+                `relative transition-all duration-300 ${isActive
+                  ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500 font-semibold"
+                  : "text-base-content hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-500"
                 }`
               }
             >
               {link.label}
               <span
-                className={`absolute bottom-[-4px] left-0 h-[2px] rounded-full transition-all duration-300 ${
-                  window.location.pathname === link.path
-                    ? "w-full bg-gradient-to-r from-pink-500 to-purple-500"
-                    : "w-0 group-hover:w-full bg-gradient-to-r from-pink-500 to-purple-500"
-                }`}
+                className={`absolute bottom-[-4px] left-0 h-[2px] rounded-full transition-all duration-300 ${window.location.pathname === link.path
+                  ? "w-full bg-gradient-to-r from-pink-500 to-purple-500"
+                  : "w-0 group-hover:w-full bg-gradient-to-r from-pink-500 to-purple-500"
+                  }`}
               ></span>
             </NavLink>
           ))}
@@ -116,10 +114,12 @@ const Navbar = ({ theme, setTheme }) => {
               onMouseLeave={() => setShowDropdown(false)}
             >
               <img
-                src={user?.photoURL || "https://i.ibb.co.com/d2mY2mP/user.png"}
+                src={user?.photoURL || "/default-user.jpg"}
+                className="w-10 h-10 rounded-full object-cover"
                 alt="User"
-                className="w-9 h-9 rounded-full border border-gray-400 cursor-pointer hover:ring-2 hover:ring-pink-500 transition"
               />
+
+
 
               <AnimatePresence>
                 {showDropdown && (
@@ -139,9 +139,8 @@ const Navbar = ({ theme, setTheme }) => {
                     <button
                       onClick={handleLogout}
                       disabled={loggingOut}
-                      className={`btn btn-sm w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white border-none ${
-                        loggingOut ? "opacity-70" : ""
-                      }`}
+                      className={`btn btn-sm w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white border-none ${loggingOut ? "opacity-70" : ""
+                        }`}
                     >
                       {loggingOut ? (
                         <span className="loading loading-spinner loading-xs"></span>
@@ -201,10 +200,9 @@ const Navbar = ({ theme, setTheme }) => {
                     end
                     onClick={() => setIsMenuOpen(false)}
                     className={({ isActive }) =>
-                      `block transition-all ${
-                        isActive
-                          ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500 font-semibold"
-                          : "text-base-content"
+                      `block transition-all ${isActive
+                        ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500 font-semibold"
+                        : "text-base-content"
                       }`
                     }
                   >
@@ -218,9 +216,8 @@ const Navbar = ({ theme, setTheme }) => {
                   <button
                     onClick={handleLogout}
                     disabled={loggingOut}
-                    className={`btn btn-sm w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white border-none ${
-                      loggingOut ? "opacity-70" : ""
-                    }`}
+                    className={`btn btn-sm w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white border-none ${loggingOut ? "opacity-70" : ""
+                      }`}
                   >
                     {loggingOut ? (
                       <span className="loading loading-spinner loading-xs"></span>

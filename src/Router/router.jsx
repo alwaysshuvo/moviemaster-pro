@@ -32,7 +32,7 @@ const router = createBrowserRouter([
         loader: async () => {
           const base =
             import.meta.env.VITE_API_BASE ||
-            "https://moviemaster-pro-server-private.vercel.app";
+            "http://localhost:5000";
           const res = await fetch(`${base}/movies`);
           return res.json();
         },
@@ -48,7 +48,7 @@ const router = createBrowserRouter([
         loader: async () => {
           const base =
             import.meta.env.VITE_API_BASE ||
-            "https://moviemaster-pro-server-private.vercel.app";
+            "http://localhost:5000";
           const res = await fetch(`${base}/movies`);
           return res.json();
         },
