@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BASE =
   import.meta.env.VITE_API_BASE ||
-  "https://moviemaster-pro-server-production.up.railway.app";
+  "https://moviemaster-pro-server-hazel.vercel.app";
 
 const api = axios.create({
   baseURL: BASE,

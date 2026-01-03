@@ -15,25 +15,29 @@ const MyCollection = () => {
 
   useEffect(() => {
     if (!user?.email) return;
+
     const fetchUserMovies = async () => {
       try {
-        const encodedEmail = encodeURIComponent(user.email);
-        const res = await api.get(`/movies/user/${encodedEmail}`);
+        // ✅ CORRECT API (query param)
+        const res = await api.get(
+          `/my-collection?email=${encodeURIComponent(user.email)}`
+        );
         setMovies(res.data);
-      } catch {
+      } catch (err) {
+        console.error(err);
         toast.error("Failed to fetch movies");
       } finally {
         setLoading(false);
       }
     };
+
     fetchUserMovies();
   }, [user]);
 
   const openDeleteModal = (id, title) => {
     setDeleteId(id);
     setDeleteTitle(title);
-    const modal = document.getElementById("delete_modal");
-    if (modal && typeof modal.showModal === "function") modal.showModal();
+    document.getElementById("delete_modal")?.showModal();
   };
 
   const confirmDelete = async () => {
@@ -44,8 +48,7 @@ const MyCollection = () => {
     } catch {
       toast.error("Failed to delete movie.");
     } finally {
-      const modal = document.getElementById("delete_modal");
-      if (modal && typeof modal.close === "function") modal.close();
+      document.getElementById("delete_modal")?.close();
     }
   };
 
@@ -54,6 +57,8 @@ const MyCollection = () => {
   return (
     <div className="bg-base-100 text-base-content min-h-screen py-20 transition-all duration-300">
       <Toaster position="top-center" />
+
+      {/* HEADER */}
       <motion.div
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -71,6 +76,7 @@ const MyCollection = () => {
         </div>
       </motion.div>
 
+      {/* DELETE MODAL */}
       <dialog id="delete_modal" className="modal">
         <div className="modal-box bg-base-200 text-center">
           <h3 className="text-lg font-bold text-red-500 mb-3">
@@ -94,9 +100,10 @@ const MyCollection = () => {
         </div>
       </dialog>
 
+      {/* EMPTY STATE */}
       {movies.length === 0 ? (
         <div className="flex flex-col justify-center items-center h-60 text-gray-500 text-lg">
-           You haven’t added any movies yet.
+          You haven’t added any movies yet.
           <Link
             to="/movies/add"
             className="btn btn-primary mt-4 text-white font-semibold"
@@ -128,6 +135,7 @@ const MyCollection = () => {
                   />
                 </div>
               </Link>
+
               <div className="p-4 text-center space-y-2">
                 <h4 className="text-lg font-semibold">{movie.title}</h4>
                 <p className="text-sm text-gray-500">
@@ -141,7 +149,9 @@ const MyCollection = () => {
                     Edit
                   </Link>
                   <button
-                    onClick={() => openDeleteModal(movie._id, movie.title)}
+                    onClick={() =>
+                      openDeleteModal(movie._id, movie.title)
+                    }
                     className="btn btn-sm bg-red-500 hover:bg-red-600 text-white"
                   >
                     Delete

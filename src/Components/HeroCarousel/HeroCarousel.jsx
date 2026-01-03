@@ -4,6 +4,7 @@ import { Autoplay, Pagination, Navigation, EffectFade } from "swiper/modules";
 import api from "../../utils/api";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -16,99 +17,99 @@ const HeroCarousel = () => {
     api
       .get("/movies")
       .then((res) => setMovies(res.data.slice(0, 6)))
-      .catch((err) => console.error("❌ Error fetching movies:", err));
+      .catch((err) => console.error(err));
   }, []);
 
   if (!movies.length) {
     return (
-      <div className="h-[80vh] flex items-center justify-center text-base-content">
+      <div className="h-[80vh] flex items-center justify-center">
         Loading movies...
       </div>
     );
   }
 
   return (
-    <div className="relative w-screen left-1/2 right-1/2 -translate-x-1/2 overflow-hidden shadow-2xl">
+    <div className="relative w-screen left-1/2 right-1/2 -translate-x-1/2 overflow-hidden">
+
+      {/* LEFT FADE (dark only) */}
+      <div
+        className="
+          pointer-events-none absolute left-0 top-0 h-full w-40 z-10
+          hidden dark:block
+          bg-gradient-to-r from-black via-black/80 to-transparent
+        "
+      />
+
+      {/* RIGHT FADE (dark only) */}
+      <div
+        className="
+          pointer-events-none absolute right-0 top-0 h-full w-40 z-10
+          hidden dark:block
+          bg-gradient-to-l from-black via-black/80 to-transparent
+        "
+      />
+
       <Swiper
         modules={[Autoplay, Pagination, Navigation, EffectFade]}
         effect="fade"
-        autoplay={{
-          delay: 4000,
-          disableOnInteraction: false,
-        }}
-        pagination={{ clickable: true }}
+        autoplay={{ delay: 4000, disableOnInteraction: false }}
         navigation
+        pagination={{ clickable: true }}
         loop
         speed={1000}
-        className="h-[90vh] md:h-[95vh]"
+        className="h-[90vh] md:h-[95vh] relative z-30"
       >
         {movies.map((movie) => (
           <SwiperSlide key={movie._id}>
             <Link to={`/movies/${movie._id}`}>
-              {/* 🎬 Background Wrapper */}
-              <div
-                className="relative w-full h-full group flex items-center justify-center"
-                style={{
-                  background: `radial-gradient(circle at center, rgba(10,10,10,0.95) 0%, rgba(0,0,0,0.9) 100%)`,
-                }}
-              >
-                {/* 🎥 Movie Poster */}
+              <div className="relative w-full h-full bg-white dark:bg-black">
+
+                {/* IMAGE */}
                 <img
                   src={movie.posterUrl}
                   alt={movie.title}
-                  className="w-full h-full object-cover md:object-contain transition-all duration-700 group-hover:scale-105 rounded-lg"
-                  onError={(e) => {
-                    e.target.src =
-                      "https://dummyimage.com/1920x1080/000/fff&text=No+Image";
-                  }}
+                  className="w-full h-full object-cover md:object-contain"
                 />
 
-                {/* 🎨 Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent" />
+                {/* 🔥 BOTTOM GRADIENT → ONLY DARK MODE */}
+                <div
+                  className="
+                    pointer-events-none absolute bottom-0 left-0 w-full h-[45%]
+                    hidden dark:block
+                    bg-gradient-to-t from-black/95 via-black/60 to-transparent
+                  "
+                />
 
-                {/* 🎬 Movie Details */}
-                <div className="absolute bottom-[12%] left-[8%] text-white max-w-2xl z-10 drop-shadow-lg">
+                {/* TEXT */}
+                <div className="absolute bottom-[12%] left-[8%] z-20 max-w-2xl">
                   <motion.h2
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="text-5xl md:text-7xl font-extrabold mb-4 leading-tight"
+                    className="text-5xl md:text-7xl font-extrabold text-gray-900 dark:text-white"
                   >
                     {movie.title}
                   </motion.h2>
 
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3, duration: 0.6 }}
-                    className="text-gray-200 mb-5 text-sm md:text-lg max-w-2xl"
-                  >
-                    {movie.plotSummary?.slice(0, 180)}...
-                  </motion.p>
+                  <p className="mt-4 text-gray-700 dark:text-gray-200">
+                    {movie.plotSummary?.slice(0, 160)}...
+                  </p>
 
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                    className="flex items-center gap-4 text-sm md:text-base"
-                  >
-                    <span className="bg-yellow-500 text-black font-semibold px-4 py-1 rounded-full shadow-md">
+                  <div className="mt-4 flex gap-3">
+                    <span className="bg-yellow-500 text-black px-4 py-1 rounded-full">
                       ⭐ {movie.rating}
                     </span>
-                    <span className="px-4 py-1 bg-white/25 rounded-full backdrop-blur-md shadow">
+                    <span className="px-4 py-1 rounded-full bg-black/10 dark:bg-white/25 text-gray-900 dark:text-white">
                       {movie.genre}
                     </span>
-                    <span className="px-4 py-1 bg-white/25 rounded-full backdrop-blur-md shadow">
+                    <span className="px-4 py-1 rounded-full bg-black/10 dark:bg-white/25 text-gray-900 dark:text-white">
                       {movie.releaseYear}
                     </span>
-                  </motion.div>
+                  </div>
 
-                  <Link
-                    to={`/movies/${movie._id}`}
-                    className="inline-block mt-8 bg-primary hover:bg-primary/80 text-white font-semibold px-8 py-3 rounded-full shadow-lg transition-all text-lg"
-                  >
+                  <button className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-full">
                     View Details →
-                  </Link>
+                  </button>
                 </div>
               </div>
             </Link>
