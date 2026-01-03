@@ -7,7 +7,7 @@ Built with React, Firebase & TailwindCSS — fully responsive and user-centric.
 ---
 # 🎥 Demo User Credential:
 
-Email: demo@moviematrix.com
+Email: demo@moviematrix.com <br>
 Password: Demo@123
 
 ---
@@ -17,8 +17,13 @@ Password: Demo@123
 
 ---
 
-## 📁 Repository  
+## 📁 Client Repository  
 🔗 **https://github.com/alwaysshuvo/moviemaster-pro**
+
+---
+
+## 📁 Server Repository  
+🔗 **https://github.com/alwaysshuvo/moviemaster-pro-server**
 
 ---
 
