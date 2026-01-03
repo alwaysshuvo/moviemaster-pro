@@ -16,6 +16,14 @@ const MovieDetails = lazy(() => import("../Pages/MovieDetails/MovieDetails"));
 const UpdateMovie = lazy(() => import("../Pages/UpdateMovie/UpdateMovie"));
 const Watchlist = lazy(() => import("../Pages/Watchlist/Watchlist"));
 const FilterMovies = lazy(() => import("../Pages/Filter/FilterMovies"));
+const About = lazy(() => import("../Pages/About/About"));
+const Contact = lazy(() => import("../Pages/Contact/Contact"));
+
+const withSuspense = (Component) => (
+  <Suspense fallback={<LoadingSpinner />}>
+    <Component />
+  </Suspense>
+);
 
 const router = createBrowserRouter([
   {
@@ -24,128 +32,94 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <Home />
-          </Suspense>
-        ),
-        loader: async () => {
-          const base =
-            import.meta.env.VITE_API_BASE ||
-            "http://localhost:5000";
-          const res = await fetch(`${base}/movies`);
-          return res.json();
-        },
+        element: withSuspense(Home),
       },
 
       {
         path: "/movies",
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <AllMovies />
-          </Suspense>
-        ),
-        loader: async () => {
-          const base =
-            import.meta.env.VITE_API_BASE ||
-            "http://localhost:5000";
-          const res = await fetch(`${base}/movies`);
-          return res.json();
-        },
+        element: withSuspense(AllMovies),
+      },
+
+      {
+        path: "/about",
+        element: withSuspense(About),
+      },
+
+      {
+        path: "/contact",
+        element: withSuspense(Contact),
       },
 
       {
         path: "/movies/add",
         element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <PrivateRoute>
-              <AddMovie />
-            </PrivateRoute>
-          </Suspense>
+          <PrivateRoute>
+            {withSuspense(AddMovie)}
+          </PrivateRoute>
         ),
       },
 
       {
         path: "/movies/my-collection",
         element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <PrivateRoute>
-              <MyCollection />
-            </PrivateRoute>
-          </Suspense>
+          <PrivateRoute>
+            {withSuspense(MyCollection)}
+          </PrivateRoute>
         ),
       },
 
       {
         path: "/movies/update/:id",
         element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <PrivateRoute>
-              <UpdateMovie />
-            </PrivateRoute>
-          </Suspense>
+          <PrivateRoute>
+            {withSuspense(UpdateMovie)}
+          </PrivateRoute>
         ),
       },
 
       {
         path: "/movies/:id",
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <MovieDetails />
-          </Suspense>
-        ),
+        element: withSuspense(MovieDetails),
       },
 
       {
         path: "/watchlist",
         element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <PrivateRoute>
-              <Watchlist />
-            </PrivateRoute>
-          </Suspense>
+          <PrivateRoute>
+            {withSuspense(Watchlist)}
+          </PrivateRoute>
         ),
       },
 
       {
         path: "/filter",
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <FilterMovies />
-          </Suspense>
-        ),
+        element: withSuspense(FilterMovies),
       },
 
       {
         path: "/login",
         element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          </Suspense>
+          <PublicRoute>
+            {withSuspense(Login)}
+          </PublicRoute>
         ),
       },
 
       {
         path: "/signup",
         element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <PublicRoute>
-              <Signup />
-            </PublicRoute>
-          </Suspense>
+          <PublicRoute>
+            {withSuspense(Signup)}
+          </PublicRoute>
         ),
       },
 
       {
         path: "/forgot-password",
         element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <PublicRoute>
-              <ForgotPassword />
-            </PublicRoute>
-          </Suspense>
+          <PublicRoute>
+            {withSuspense(ForgotPassword)}
+          </PublicRoute>
         ),
       },
     ],

@@ -36,6 +36,8 @@ const Navbar = ({ theme, setTheme }) => {
   const publicLinks = [
     { path: "/", label: "Home" },
     { path: "/movies", label: "All Movies" },
+    { path: "/about", label: "About" },
+    { path: "/contact", label: "Contact" },
   ];
 
   const privateLinks = [
@@ -50,7 +52,7 @@ const Navbar = ({ theme, setTheme }) => {
     <nav className="sticky top-0 z-50 backdrop-blur-lg bg-base-100/70 border-b border-base-300 shadow-sm transition-all duration-300">
       <Toaster position="top-center" />
 
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-3">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-4">
         <div className="flex items-center gap-3">
           <motion.button
             whileTap={{ scale: 0.8, rotate: 90 }}
@@ -89,18 +91,20 @@ const Navbar = ({ theme, setTheme }) => {
               to={link.path}
               end
               className={({ isActive }) =>
-                `relative transition-all duration-300 ${isActive
-                  ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500 font-semibold"
-                  : "text-base-content hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-500"
+                `relative transition-all duration-300 ${
+                  isActive
+                    ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500 font-semibold"
+                    : "text-base-content hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-500"
                 }`
               }
             >
               {link.label}
               <span
-                className={`absolute bottom-[-4px] left-0 h-[2px] rounded-full transition-all duration-300 ${window.location.pathname === link.path
-                  ? "w-full bg-gradient-to-r from-pink-500 to-purple-500"
-                  : "w-0 group-hover:w-full bg-gradient-to-r from-pink-500 to-purple-500"
-                  }`}
+                className={`absolute bottom-[-4px] left-0 h-[2px] rounded-full transition-all duration-300 ${
+                  window.location.pathname === link.path
+                    ? "w-full bg-gradient-to-r from-pink-500 to-purple-500"
+                    : "w-0 group-hover:w-full bg-gradient-to-r from-pink-500 to-purple-500"
+                }`}
               ></span>
             </NavLink>
           ))}
@@ -119,8 +123,6 @@ const Navbar = ({ theme, setTheme }) => {
                 alt="User"
               />
 
-
-
               <AnimatePresence>
                 {showDropdown && (
                   <motion.div
@@ -136,11 +138,19 @@ const Navbar = ({ theme, setTheme }) => {
                     <p className="text-center text-xs text-gray-500 mb-3 break-all">
                       {user.email || "No email available"}
                     </p>
+                    <Link
+                      to="/profile"
+                      className="block text-center text-sm mb-2 hover:text-primary"
+                    >
+                      View Profile
+                    </Link>
+
                     <button
                       onClick={handleLogout}
                       disabled={loggingOut}
-                      className={`btn btn-sm w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white border-none ${loggingOut ? "opacity-70" : ""
-                        }`}
+                      className={`btn btn-sm w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white border-none ${
+                        loggingOut ? "opacity-70" : ""
+                      }`}
                     >
                       {loggingOut ? (
                         <span className="loading loading-spinner loading-xs"></span>
@@ -200,9 +210,10 @@ const Navbar = ({ theme, setTheme }) => {
                     end
                     onClick={() => setIsMenuOpen(false)}
                     className={({ isActive }) =>
-                      `block transition-all ${isActive
-                        ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500 font-semibold"
-                        : "text-base-content"
+                      `block transition-all ${
+                        isActive
+                          ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500 font-semibold"
+                          : "text-base-content"
                       }`
                     }
                   >
@@ -216,8 +227,9 @@ const Navbar = ({ theme, setTheme }) => {
                   <button
                     onClick={handleLogout}
                     disabled={loggingOut}
-                    className={`btn btn-sm w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white border-none ${loggingOut ? "opacity-70" : ""
-                      }`}
+                    className={`btn btn-sm w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white border-none ${
+                      loggingOut ? "opacity-70" : ""
+                    }`}
                   >
                     {loggingOut ? (
                       <span className="loading loading-spinner loading-xs"></span>
