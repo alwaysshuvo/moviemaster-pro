@@ -145,7 +145,7 @@ const AddMovie = () => {
             type="submit"
             whileTap={{ scale: 0.95 }}
             disabled={formLoading}
-            className="btn btn-primary md:col-span-2 rounded-xl text-lg font-semibold mt-4"
+            className="btn-view md:col-span-2 rounded-xl text-lg font-semibold mt-4"
           >
             {formLoading ? "Adding..." : "Add Movie 🎬"}
           </motion.button>

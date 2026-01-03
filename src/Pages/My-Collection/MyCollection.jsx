@@ -106,7 +106,7 @@ const MyCollection = () => {
           You haven’t added any movies yet.
           <Link
             to="/movies/add"
-            className="btn btn-primary mt-4 text-white font-semibold"
+            className="btn-view mt-4 text-white font-semibold"
           >
             Add a Movie
           </Link>

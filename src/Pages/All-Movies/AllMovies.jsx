@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import api from "../../utils/api";
 import LoadingSpinner from "../../Components/LoadingSpinner/LoadingSpinner";
 import FilterMovies from "../Filter/FilterMovies";
+import MovieCardSkeleton from "../../Components/Skeletons/MovieCardSkeleton";
 
 const AllMovies = () => {
   const [loading, setLoading] = useState(true);
@@ -53,8 +54,7 @@ const AllMovies = () => {
     // ⭐ Rating
     data = data.filter(
       (m) =>
-        m.rating >= filters.ratingRange[0] &&
-        m.rating <= filters.ratingRange[1]
+        m.rating >= filters.ratingRange[0] && m.rating <= filters.ratingRange[1]
     );
 
     // 🔀 Sorting
@@ -63,9 +63,7 @@ const AllMovies = () => {
     } else if (filters.sort === "title") {
       data.sort((a, b) => a.title.localeCompare(b.title));
     } else {
-      data.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      );
+      data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     }
 
     setFilteredMovies(data);
@@ -79,7 +77,15 @@ const AllMovies = () => {
     }));
   }, []);
 
-  if (loading) return <LoadingSpinner />;
+  if (loading) {
+    return (
+      <div className="min-h-screen px-6 py-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-8">
+        {Array.from({ length: 10 }).map((_, i) => (
+          <MovieCardSkeleton key={i} />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="bg-base-100 text-base-content min-h-screen py-20 transition-all duration-300">
@@ -156,9 +162,11 @@ const AllMovies = () => {
               </div>
 
               {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent 
+              <div
+                className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent 
                               opacity-0 group-hover:opacity-100 transition-opacity duration-500 
-                              flex flex-col justify-end p-4">
+                              flex flex-col justify-end p-4"
+              >
                 <h4 className="text-lg font-semibold text-white truncate">
                   {movie.title}
                 </h4>
@@ -166,8 +174,9 @@ const AllMovies = () => {
                   ⭐ {movie.rating} • {movie.genre}
                 </p>
                 <div className="mt-3">
-                  <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-500 
-                                   text-white px-3 py-1.5 rounded-full text-xs font-medium">
+                  <span
+                    className="inline-block btn-view px-3 py-1.5 rounded-full text-xs font-medium"
+                  >
                     View Details →
                   </span>
                 </div>

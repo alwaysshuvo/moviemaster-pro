@@ -107,7 +107,7 @@ const HeroCarousel = () => {
                     </span>
                   </div>
 
-                  <button className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-full">
+                  <button className="mt-6 btn-view px-6 py-3 rounded-full">
                     View Details →
                   </button>
                 </div>

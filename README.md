@@ -5,6 +5,12 @@ MovieMaster Pro is a modern and intuitive movie management platform where users 
 Built with React, Firebase & TailwindCSS — fully responsive and user-centric.
 
 ---
+# 🎥 Demo User Credential:
+
+Email: demo@moviematrix.com
+Password: Demo@123
+
+---
 
 ## 🌐 Live Demo  
 🔗 **https://movie-matrix10.netlify.app/**

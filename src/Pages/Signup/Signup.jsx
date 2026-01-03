@@ -182,7 +182,7 @@ const Signup = () => {
             <button
               type="submit"
               disabled={loading}
-              className="btn btn-primary w-full"
+              className="btn-register w-full"
             >
               {loading ? <LoadingAnimation small /> : "Sign Up"}
             </button>

@@ -155,7 +155,7 @@ const Signin = () => {
               whileTap={{ scale: 0.96 }}
               type="submit"
               disabled={submitting}
-              className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-2.5 rounded-lg font-semibold hover:opacity-90 transition"
+              className="w-full btn-login py-2.5 rounded-lg font-semibold hover:opacity-90 transition"
             >
               {submitting ? "Logging in..." : "Log In"}
             </motion.button>

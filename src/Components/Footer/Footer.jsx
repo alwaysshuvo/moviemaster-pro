@@ -1,11 +1,30 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <footer className="bg-base-200 border-t border-base-300 text-base-content py-10 transition-all">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
         <div>
-          <h3 className="text-xl font-bold mb-2 text-primary">MovieMatrix</h3>
+          <Link
+            to="/"
+            className="flex items-center gap-[4px] font-extrabold text-xl sm:text-2xl"
+          >
+            <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center">
+              <img
+                src="https://i.ibb.co.com/PzMVBr3h/Chat-GPT-Image-Nov-13-2025-03-22-06-PM.png"
+                alt="Logo"
+                className="w-12 h-12 sm:w-14 sm:h-14 object-contain"
+              />
+            </div>
+
+            <span
+              className="leading-none ml-[-10px]
+"
+            >
+              Movie<span className="text-primary">Matrix</span>
+            </span>
+          </Link>
           <p className="text-sm opacity-80">
             Explore, collect, and review your favorite films — all in one place.
           </p>

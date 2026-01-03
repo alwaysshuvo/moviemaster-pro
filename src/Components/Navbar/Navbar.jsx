@@ -166,13 +166,13 @@ const Navbar = ({ theme, setTheme }) => {
             <div className="flex items-center gap-2">
               <Link
                 to="/login"
-                className="btn btn-sm bg-gradient-to-r from-pink-500 to-purple-500 text-white border-none"
+                className="btn-login border-none"
               >
                 Login
               </Link>
               <Link
                 to="/signup"
-                className="btn btn-sm bg-gradient-to-l from-pink-500 to-purple-500 text-white border-none"
+                className="btn-register border-none"
               >
                 Register
               </Link>

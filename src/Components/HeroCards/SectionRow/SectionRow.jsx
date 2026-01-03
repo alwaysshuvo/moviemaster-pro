@@ -6,15 +6,21 @@ import "swiper/css";
 import "swiper/css/navigation";
 import api from "../../../utils/api";
 import { motion } from "framer-motion";
+import MovieSliderSkeleton from "../../Skeletons/MovieSliderSkeleton";
 
 const SectionRow = ({ title, limit, startIndex }) => {
   const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     api
       .get(`/movies`)
-      .then((res) => setMovies(res.data.slice(startIndex, startIndex + limit)))
-      .catch((err) => console.error("❌ Error fetching movies:", err));
+      .then((res) => {
+        setMovies(res.data.slice(startIndex, startIndex + limit));
+      })
+      .catch((err) => console.error("❌ Error fetching movies:", err))
+      .finally(() => setLoading(false));
   }, [limit, startIndex]);
 
   return (
@@ -41,44 +47,50 @@ const SectionRow = ({ title, limit, startIndex }) => {
         }}
         className="pb-6"
       >
-        {movies.map((movie, i) => (
-          <SwiperSlide key={movie._id || i}>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3 }}
-              className="relative group bg-gradient-to-br from-gray-200/40 via-gray-100/30 to-gray-200/50 
-              dark:from-gray-800/50 dark:via-gray-700/40 dark:to-gray-800/60 
-              rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all cursor-pointer"
-            >
-              <Link to={`/movies/${movie._id}`}>
-                <div className="w-full h-72 flex items-center justify-center bg-base-200">
-                  <img
-                    src={movie.posterUrl}
-                    alt={movie.title}
-                    className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
-                    onError={(e) =>
-                      (e.target.src =
-                        "https://dummyimage.com/400x600/000/fff&text=No+Image")
-                    }
-                  />
-                </div>
-
-                <div
-                  className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent 
-                opacity-0 group-hover:opacity-100 transition-opacity duration-500 
-                rounded-2xl flex flex-col justify-end p-4 backdrop-blur-[1px]"
+        {loading
+          ? Array.from({ length: limit }).map((_, i) => (
+              <SwiperSlide key={i}>
+                <MovieSliderSkeleton />
+              </SwiperSlide>
+            ))
+          : movies.map((movie) => (
+              <SwiperSlide key={movie._id}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.3 }}
+                  className="relative group bg-gradient-to-br from-gray-200/40 via-gray-100/30 to-gray-200/50 
+          dark:from-gray-800/50 dark:via-gray-700/40 dark:to-gray-800/60 
+          rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all cursor-pointer"
                 >
-                  <h4 className="text-lg font-semibold text-white truncate">
-                    {movie.title}
-                  </h4>
-                  <p className="text-sm text-gray-300 mt-1">
-                    ⭐ {movie.rating} • {movie.genre}
-                  </p>
-                </div>
-              </Link>
-            </motion.div>
-          </SwiperSlide>
-        ))}
+                  <Link to={`/movies/${movie._id}`}>
+                    <div className="w-full h-72 flex items-center justify-center bg-base-200">
+                      <img
+                        src={movie.posterUrl}
+                        alt={movie.title}
+                        className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
+                        onError={(e) =>
+                          (e.target.src =
+                            "https://dummyimage.com/400x600/000/fff&text=No+Image")
+                        }
+                      />
+                    </div>
+
+                    <div
+                      className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent 
+              opacity-0 group-hover:opacity-100 transition-opacity duration-500 
+              rounded-2xl flex flex-col justify-end p-4"
+                    >
+                      <h4 className="text-lg font-semibold text-white truncate">
+                        {movie.title}
+                      </h4>
+                      <p className="text-sm text-gray-300 mt-1">
+                        ⭐ {movie.rating} • {movie.genre}
+                      </p>
+                    </div>
+                  </Link>
+                </motion.div>
+              </SwiperSlide>
+            ))}
       </Swiper>
     </div>
   );

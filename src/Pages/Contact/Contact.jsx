@@ -22,24 +22,43 @@ const Contact = () => {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-5xl grid md:grid-cols-2 gap-10 bg-base-200 rounded-2xl shadow-lg overflow-hidden"
+        className="w-full max-w-5xl grid md:grid-cols-2 gap-10 rounded-2xl overflow-hidden"
       >
-        {/* Left Info */}
-        <div className="p-10 flex flex-col justify-center bg-gradient-to-br from-primary to-secondary text-primary-content">
-          <h2 className="text-3xl font-bold mb-4">Get in Touch</h2>
-          <p className="opacity-90 mb-6">
-            Have a question, feedback, or suggestion?  
-            We’d love to hear from you.
-          </p>
-          <p className="text-sm opacity-80">
-            Email: support@moviematrix.com  
-            <br />
-            Phone: +880 1234-567890
-          </p>
+        {/* LEFT — GLASS GRADIENT CARD */}
+        <div className="relative p-10 flex flex-col justify-center text-white">
+          {/* Gradient Glass Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/40 to-purple-600/40 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl"></div>
+
+          {/* Content */}
+          <div className="relative z-10">
+            <h2 className="text-3xl font-extrabold mb-4">
+              Get in Touch ✨
+            </h2>
+
+            <p className="opacity-90 mb-6 leading-relaxed">
+              Have a question, feedback, or suggestion?
+              <br />
+              We’d love to hear from you.
+            </p>
+
+            <div className="space-y-2 text-sm opacity-90">
+              <p>
+                📧 <span className="font-semibold">Email:</span>{" "}
+                support@moviematrix.com
+              </p>
+              <p>
+                📞 <span className="font-semibold">Phone:</span>{" "}
+                +880 1234-567890
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-10">
+        {/* RIGHT — FORM */}
+        <form
+          onSubmit={handleSubmit}
+          className="p-10 bg-base-200 rounded-2xl shadow-lg"
+        >
           <h3 className="text-2xl font-bold mb-6 text-center">
             Contact Form
           </h3>
@@ -68,7 +87,7 @@ const Contact = () => {
           <button
             type="submit"
             disabled={loading}
-            className="btn btn-primary w-full"
+            className="btn-view w-full border-none"
           >
             {loading ? (
               <span className="loading loading-spinner loading-sm"></span>
